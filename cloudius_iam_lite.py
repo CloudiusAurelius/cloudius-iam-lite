@@ -4,9 +4,10 @@ Purpose: Scans all IAM roles in the current AWS account and flags any that have 
          Specifically, it identifies policies with "Action": "*" or "Resource": "*".
 
 Date: 2025-04-11
+Author: Cloudius Aurelius
 
 Usage:
-    python iam_role_analyzer.py --profile your-aws-profile-name [--region eu-central-1] [--summary]
+    python cloudius-iam-lite.py --profile your-aws-profile-name [--region eu-central-1] [--summary]
 
 Environment:
     Run this script from a local terminal or any environment where the AWS CLI is configured
@@ -15,7 +16,7 @@ Environment:
 Setup:
     1. Create and activate a virtual environment (optional but recommended):
        python -m venv venv
-       source venv/bin/activate  # On Windows: venv\Scripts\activate
+       source venv/bin/activate  # On Windows: venv\\Scripts\activate
 
     2. Install dependencies:
        pip install -r requirements.txt

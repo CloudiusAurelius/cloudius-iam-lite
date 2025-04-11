@@ -1,10 +1,17 @@
 # 🏛️ cloudius-iam-lite
 
+
+![Python](https://img.shields.io/badge/python-3.8+-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Tests](https://img.shields.io/badge/tests-passing-brightgreen)
+
+
+
 **Scan IAM roles for wildcard permissions and identify risky configurations in seconds.**
 
 A free, lightweight command-line tool for AWS users to detect over-permissive IAM policies across their account. Ideal for small teams, solo engineers, or anyone wanting to tighten IAM security fast.
 
-## 🚀 Features (Free Edition)
+## Features (Free Edition)
 
 - Scans IAM roles across your AWS account
 - Flags risky policies containing:
@@ -19,7 +26,7 @@ A free, lightweight command-line tool for AWS users to detect over-permissive IA
 ## Usage
 
 ```bash
-python iam_role_analyzer.py --profile your-aws-profile-name [--region eu-central-1] [--summary]
+python cloudius-iam-lite.py --profile your-aws-profile-name [--region eu-central-1] [--summary]
 ```
 
 ### Example Output
@@ -58,7 +65,7 @@ pip install -r requirements.txt
    ```
 4. Run the tool:
    ```bash
-   python iam_role_analyzer.py --profile your-profile-name
+   python cloudius-iam-.ite.py --profile your-profile-name
    ```
 
 ## License
