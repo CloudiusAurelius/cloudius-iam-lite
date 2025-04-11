@@ -1,7 +1,7 @@
 # 🏛️ cloudius-iam-lite
 
 
-![Python](https://img.shields.io/badge/python-3.8+-blue)
+![Python](https://img.shields.io/badge/python-3.11+-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Tests](https://img.shields.io/badge/tests-passing-brightgreen)
 
@@ -44,7 +44,7 @@ python cloudius-iam-lite.py --profile your-aws-profile-name [--region eu-central
 ```
 
 ## Requirements
-- Python 3.10+
+- Python 3.11+
 - `boto3` and `colorama` installed:
 
 ```bash
