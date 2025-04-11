@@ -44,7 +44,7 @@ python cloudius-iam-lite.py --profile your-aws-profile-name [--region eu-central
 ```
 
 ## Requirements
-- Python 3.7+
+- Python 3.10+
 - `boto3` and `colorama` installed:
 
 ```bash
