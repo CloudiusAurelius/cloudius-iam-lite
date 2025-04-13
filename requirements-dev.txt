@@ -1,3 +1,4 @@
 # Testing
 boto3
 pytest
+colorama
