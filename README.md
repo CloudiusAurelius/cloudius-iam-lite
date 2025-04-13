@@ -31,16 +31,28 @@ python cloudius-iam-lite.py --profile your-aws-profile-name [--region eu-central
 
 ### Example Output
 ```
-🔐 Risky Roles (limited to 10):
-- Role: AdminRole
-  → Attached policy 'AdministratorAccess' contains wildcard
+AWS Session successfully created. Profile: my-dev-profile in region eu-central-1
 
-✅ Roles with No Detected Issues (limited to 10):
-- Role: ReadOnlyLambda
-  → No wildcards detected
+[!] - Role: EC2AutoTagger
+   → Attached policy 'AmazonEC2SpotFleetTaggingRole' contains wildcard
 
-⚠️ This free tool displays up to 10 flagged + 10 OK roles.
-💡 Need more? Open a [GitHub Issue](https://github.com/your-org/cloudius-iam-lite/issues) to suggest features or share feedback.
+[!] - Role: QuickSightDataRole
+   → Attached policy 'AWSQuicksightAthenaAccess' contains wildcard
+   → Attached policy 'AWSQuickSightRedshiftPolicy' contains wildcard
+   → Attached policy 'AWSQuickSightIAMPolicy' contains wildcard
+   → Attached policy 'AWSQuickSightRDSPolicy' contains wildcard
+
+[!] - Role: PowerAdminSSO
+   → Attached policy 'AdministratorAccess' contains wildcard
+
+[OK] - Role: AnalyticsLambdaExecutor
+   → No wildcards detected
+
+⚠️ Free version limited to 10 flagged + 10 OK roles.
+
+📬 **Want deeper scans or export options?**
+💡 Open a [GitHub Issue](https://github.com/your-org/cloudius-iam-lite/issues) and let us know what you need!
+
 ```
 
 ## Requirements

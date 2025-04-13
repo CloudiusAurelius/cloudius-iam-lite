@@ -3,7 +3,7 @@ Script: iam_role_analyzer.py
 Purpose: Scans all IAM roles in the current AWS account and flags any that have over-permissive IAM policies.
          Specifically, it identifies policies with "Action": "*" or "Resource": "*".
 
-Date: 2025-04-11
+Date: 2025-04-13
 Author: Cloudius Aurelius
 
 Usage:
@@ -16,7 +16,7 @@ Environment:
 Setup:
     1. Create and activate a virtual environment (optional but recommended):
        python -m venv venv
-       source venv/bin/activate  # On Windows: venv\\Scripts\activate
+       source venv/bin/activate  # On Windows: venv\\Scripts\\activate
 
     2. Install dependencies:
        pip install -r requirements.txt
@@ -30,10 +30,10 @@ from colorama import Fore, Style, init
 import argparse
 import sys
 
-# Initialize colorama for colored terminal output
+# Initialize colorama
 init(autoreset=True)
 
-# Cap limits for free version
+# Free version caps
 MAX_RISKY = 10
 MAX_OK = 10
 
@@ -113,11 +113,11 @@ def main():
     iam = session.client('iam')
     roles = fetch_all_roles(iam)
 
-    risky_roles = []
-    ok_roles = []
+    risky_count = 0
+    safe_count = 0
 
     for role in roles:
-        if len(risky_roles) >= MAX_RISKY and len(ok_roles) >= MAX_OK:
+        if risky_count >= MAX_RISKY and safe_count >= MAX_OK:
             break
 
         role_name = role['RoleName']
@@ -125,14 +125,14 @@ def main():
         risky = False
         messages = []
 
-        # Check inline policies
+        # Inline policies
         for name in inline_policies:
             doc = iam.get_role_policy(RoleName=role_name, PolicyName=name)['PolicyDocument']
             if is_policy_risky(doc):
                 messages.append(f"→ Inline policy '{name}' contains wildcard")
                 risky = True
 
-        # Check attached managed policies
+        # Managed policies
         for ap in attached_policies:
             policy_arn = ap['PolicyArn']
             versions = iam.list_policy_versions(PolicyArn=policy_arn)['Versions']
@@ -142,35 +142,26 @@ def main():
                 messages.append(f"→ Attached policy '{ap['PolicyName']}' contains wildcard")
                 risky = True
 
-        if risky and len(risky_roles) < MAX_RISKY:
-            risky_roles.append({"role_name": role_name, "details": messages})
-        elif not risky and len(ok_roles) < MAX_OK:
-            ok_roles.append({"role_name": role_name, "details": ["→ No wildcards detected"]})
+        # Output per role
+        if risky and risky_count < MAX_RISKY:
+            print(f"{Fore.RED}[!] - Role: {role_name}{Style.RESET_ALL}")
+            for line in messages:
+                print(f"  {line}")
+            risky_count += 1
+        elif not risky and safe_count < MAX_OK:
+            print(f"{Fore.GREEN}[OK] - Role: {role_name}{Style.RESET_ALL}")
+            print("  → No wildcards detected")
+            safe_count += 1
 
-    # Output section
-    print("\n🔐 Risky Roles (limited to 10):\n")
-    for r in risky_roles:
-        print(f"- Role: {r['role_name']}")
-        for line in r['details']:
-            print(f"  {line}")
-        print()
-
-    print("\n✅ Roles with No Detected Issues (limited to 10):\n")
-    for r in ok_roles:
-        print(f"- Role: {r['role_name']}")
-        for line in r['details']:
-            print(f"  {line}")
-        print()
-
-    print("⚠️ Free version limited to 10 flagged + 10 OK roles.")
+    print("\n⚠️ Free version limited to 10 flagged + 10 OK roles.")
     print("📬 Need more? Open a GitHub Issue to suggest features or share feedback.\n")
 
     if args.summary:
-        total = len(risky_roles) + len(ok_roles)
+        total = risky_count + safe_count
         print("\n--- Summary ---")
         print(f"Total IAM Roles Analyzed: {total}")
-        print(f"Roles With Risky Policies: {len(risky_roles)}")
-        print(f"Roles With Safe Policies: {len(ok_roles)}")
+        print(f"Roles With Risky Policies: {risky_count}")
+        print(f"Roles With Safe Policies: {safe_count}")
 
 if __name__ == "__main__":
     main()
